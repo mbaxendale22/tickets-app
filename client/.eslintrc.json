@@ -1,0 +1,163 @@
+{
+    "root": true,
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:promise/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint",
+        "react",
+        "react-hooks",
+        "prettier",
+        "promise",
+        "no-autofix"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "import/ignore": ["react-native"],
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true
+            }
+        }
+    },
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "rules": {
+                "@typescript-eslint/no-shadow": ["error"],
+                "no-shadow": "off",
+                "no-undef": "off",
+
+                // TS rules
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "@typescript-eslint/no-explicit-any": "warn",
+                "no-invalid-this": "off",
+                "@typescript-eslint/no-invalid-this": ["error"],
+                "no-magic-numbers": "off",
+                "@typescript-eslint/no-magic-numbers": [
+                    "warn",
+                    {
+                        "ignore": [0, 1],
+                        "ignoreArrayIndexes": true,
+                        "ignoreEnums": true
+                    }
+                ],
+                "no-unused-vars": "off",
+                "@typescript-eslint/no-unused-vars": ["error"],
+                // Possible errors & best practice
+                "array-callback-return": [
+                    "error",
+                    {
+                        "allowImplicit": true,
+                        "checkForEach": true
+                    }
+                ],
+                "consistent-return": "error",
+                "curly": "error",
+                "default-case": "error",
+                "default-case-last": "error",
+                "eqeqeq": ["error", "always"],
+                "guard-for-in": "error",
+                "import/no-cycle": "error",
+                "import/no-restricted-paths": [
+                    "error",
+                    {
+                        "zones": [
+                            {
+                                "target": "./src",
+                                "from": "./src/theme/appThemes",
+                                "message": "All theming variables must come from src/theme/index"
+                            },
+                            {
+                                "target": "./src",
+                                "from": "./src/theme/colours",
+                                "message": "All colour variables must come from src/theme/index"
+                            },
+                            {
+                                "target": "./src",
+                                "from": "./src/theme/fonts",
+                                "message": "All font variables must come from src/theme/index"
+                            },
+                            {
+                                "target": "./src",
+                                "from": "./src/localization/languages",
+                                "message": "All translation variables must come from src/localization/index"
+                            }
+                        ]
+                    }
+                ],
+                "import/no-unresolved": ["error", { "ignore": ["@env"] }],
+                "import/order": [
+                    "error",
+                    {
+                        "alphabetize": {
+                            "order": "asc",
+                            "caseInsensitive": true
+                        },
+                        "newlines-between": "always"
+                    }
+                ],
+                "max-classes-per-file": "error",
+                "max-params": "warn",
+                "no-div-regex": "error",
+                "no-else-return": "error",
+                "no-empty-function": "error",
+                "no-eval": "error",
+                "no-floating-decimal": "error",
+                "no-loop-func": "error",
+                "no-new": "error",
+                "no-nested-ternary": "error",
+                "no-param-reassign": "error",
+                "no-return-assign": "error",
+                "no-self-compare": "error",
+                "no-template-curly-in-string": "error",
+                "no-unmodified-loop-condition": "error",
+                "no-unreachable": "error",
+                "object-shorthand": "error",
+                "sort-imports": [
+                    "error",
+                    {
+                        "ignoreCase": true,
+                        "ignoreDeclarationSort": true,
+                        "ignoreMemberSort": false
+                    }
+                ],
+                "yoda": "error",
+                // Stylistic
+                // multiline-comment-style:
+                "multiline-comment-style": "off",
+                // "no-autofix/multiline-comment-style": ["error", "bare-block"],
+                // React & RN rules
+                "react/destructuring-assignment": "error",
+                "react/jsx-no-useless-fragment": "error",
+                "react/jsx-pascal-case": "error",
+                "react/jsx-props-no-spreading": "warn",
+                // Do we want prop sorting? If so, it's a large autofix
+                // "react/jsx-sort-props": "warn", // TODO: Upgrade this to error
+                "react/no-access-state-in-setstate": "error",
+                "react/no-array-index-key": "warn", // // TODO: Upgrade this to error
+                "react/no-multi-comp": ["error", { "ignoreStateless": true }],
+                "react/no-this-in-sfc": "error",
+                "react/prop-types": "off",
+                "react-native/split-platform-components": "warn",
+                // Enforce prettier formatting
+                "prettier/prettier": "error",
+                // Promises
+                "promise/always-return": "warn", // TODO: Remove to upgrade to error
+                "promise/catch-or-return": "warn", // TODO: Remove to upgrade to error
+                "@typescript-eslint/consistent-type-imports": "error"
+            }
+        }
+    ]
+}
