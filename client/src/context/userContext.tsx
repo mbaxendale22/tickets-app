@@ -1,7 +1,13 @@
-import React, { createContext, useReducer, Dispatch, ReactNode } from 'react'
-import { ActionTypes, APIStatus, UserAction, UserState } from './contextTypes'
+// eslint-disable-next-line import/default
+import React, { createContext, useContext, useReducer } from 'react'
 
-export const userState: UserState = {
+import { loginUser } from '../api/auth'
+import { getUser } from '../api/user'
+
+import type { UserState } from './contextTypes'
+import { APIStatus, UserActionTypes } from './contextTypes'
+
+export const initialState: UserState = {
     userData: {
         id: null,
         createdAt: '',
@@ -12,35 +18,38 @@ export const userState: UserState = {
         tickets: [],
     },
     apiStatus: APIStatus.IDLE,
+    // these act as thunks, to dispatch the actions in correct order
+    login: async (email: string, password: string) =>
+        console.log(email, password),
+    logout: async () => 'no-op',
+    //TODO SIGN UP
+    signup: async () => 'no-op',
+    getCurrentUser: async () => 'no-op',
 }
 
-const UserContext = createContext<{
-    state: UserState
-    dispatch: Dispatch<any>
-}>({
-    state: userState,
-    dispatch: () => null,
-})
+const UserContext = createContext(initialState)
 
 //TODO fix this any action type
-function userReducer(state: UserState, action: UserAction) {
+function userReducer(
+    state: UserState,
+    action: { type: UserActionTypes; payload?: any },
+) {
     switch (action.type) {
-        case ActionTypes.START_USER_REQUEST:
+        case UserActionTypes.START_USER_REQUEST:
             return { ...state, apiStatus: APIStatus.LOADING }
-        case ActionTypes.END_USER_REQUEST:
+        case UserActionTypes.END_USER_REQUEST:
             return { ...state, apiStatus: APIStatus.SUCCESS }
-        case ActionTypes.SET_USER_ERROR:
+        case UserActionTypes.SET_USER_ERROR:
             return { ...state, apiStatus: APIStatus.ERROR }
-        case ActionTypes.SET_USER:
+        case UserActionTypes.SET_USER:
             return {
                 ...state,
-                id: action.payload.id,
-                createdAt: action.payload.createdAt,
-                updatedAt: action.payload.updatedAt,
-                email: action.payload.email,
-                firstName: action.payload.firstName,
-                lastName: action.payload.lastName,
-                tickets: action.payload.tickets,
+                userData: { ...action.payload },
+            }
+        case UserActionTypes.RESET_USER:
+            return {
+                ...state,
+                ...initialState,
             }
 
         default:
@@ -51,14 +60,49 @@ function userReducer(state: UserState, action: UserAction) {
 interface Props {
     children: React.ReactNode
 }
-const UserProvider: React.FC<Props> = ({ children }) => {
-    const [state, dispatch] = useReducer(userReducer, userState)
 
-    return (
-        <UserContext.Provider value={{ state, dispatch }}>
-            {children}
-        </UserContext.Provider>
-    )
+export const UserContextProvider: React.FC<Props> = ({ children }) => {
+    const [state, dispatch] = useReducer(userReducer, initialState)
+    const value = {
+        userData: {
+            id: state.userData.id,
+            createdAt: state.userData.createdAt,
+            updatedAt: state.userData.updatedAt,
+            email: state.userData.email,
+            firstName: state.userData.firstName,
+            lastName: state.userData.lastName,
+            tickets: state.userData.tickets,
+        },
+        apiStatus: state.apiStatus,
+
+        login: async (email: string, password: string) => {
+            console.log('login called', email)
+            dispatch({ type: UserActionTypes.START_USER_REQUEST })
+            try {
+                await loginUser(email, password)
+                dispatch({ type: UserActionTypes.END_USER_REQUEST })
+            } catch (error) {
+                dispatch({ type: UserActionTypes.SET_USER_ERROR })
+            }
+        },
+        logout: () => {
+            window.localStorage.removeItem('token')
+            dispatch({ type: UserActionTypes.RESET_USER })
+        },
+        signup: async () => {},
+        getCurrentUser: async () => {
+            dispatch({ type: UserActionTypes.START_USER_REQUEST })
+            try {
+                const user = await getUser()
+                dispatch({ type: UserActionTypes.SET_USER, payload: user?.req })
+                dispatch({ type: UserActionTypes.END_USER_REQUEST })
+            } catch (error) {
+                dispatch({ type: UserActionTypes.SET_USER_ERROR })
+            }
+        },
+    }
+
+    return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
 
-export { UserContext, UserProvider }
+export const useUserContext = () => useContext(UserContext)

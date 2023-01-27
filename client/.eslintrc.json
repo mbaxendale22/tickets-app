@@ -24,7 +24,6 @@
         "react": {
             "version": "detect"
         },
-        "import/ignore": ["react-native"],
         "import/resolver": {
             "typescript": {
                 "alwaysTryTypes": true
@@ -150,7 +149,7 @@
                 "react/no-multi-comp": ["error", { "ignoreStateless": true }],
                 "react/no-this-in-sfc": "error",
                 "react/prop-types": "off",
-                "react-native/split-platform-components": "warn",
+                "react-native/split-platform-components": "off",
                 // Enforce prettier formatting
                 "prettier/prettier": "error",
                 // Promises

@@ -22,6 +22,7 @@ export class TicketController {
   constructor(private ticketService: TicketService) {}
   @Get()
   getTickets(@GetUser('id') userId: number) {
+    console.log({ userId });
     return this.ticketService.getTickets(userId);
   }
 

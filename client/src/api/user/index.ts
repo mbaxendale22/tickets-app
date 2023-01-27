@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { GetUserReponse } from './types'
 
-const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsImVtYWlsIjoiYW5uYUBlbWFpbC5jb20iLCJpYXQiOjE2NzQ0MDI0ODUsImV4cCI6MTY3NDQwMzM4NX0.Vo2-Jveun3GbY_VBQ5ZCcXSNoqXNHtMAwwHk6F_TLnI'
+import type { GetUserReponse } from './types'
 
-export async function getUser(): Promise<GetUserReponse> {
+export async function getUser(): Promise<GetUserReponse | undefined> {
+    const token = window.localStorage.getItem('token')
     try {
         const response = await axios.get('http://localhost:3333/user/me', {
             headers: {
@@ -14,6 +13,7 @@ export async function getUser(): Promise<GetUserReponse> {
         console.log(response.data)
         return response.data
     } catch (error) {
-        throw error
+        console.log(error)
+        return undefined
     }
 }

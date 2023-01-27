@@ -1,19 +1,32 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { getUser } from '../api/user'
+import { GetUserReponse } from '../api/user/types'
+import { ActionTypes } from '../context/contextTypes'
 import { UserContext } from '../context/userContext'
 
-export async function useGetUser() {
+export function useGetUser() {
     const userContext = useContext(UserContext)
+    const [userInfo, setUserInfo] = useState<GetUserReponse>()
 
-    try {
-        userContext.dispatch({ type: 'START_USER_REQUEST' })
+    useEffect(() => {
+        const testCall = async () => {
+            userContext.dispatch({ type: ActionTypes.START_USER_REQUEST })
+            try {
+                const response = await getUser()
+                userContext.dispatch({
+                    type: ActionTypes.SET_USER,
+                    payload: response.req,
+                })
 
-        const { req } = await getUser()
+                setUserInfo(response)
 
-        userContext.dispatch({ type: 'SET_USER', payload: req })
+                userContext.dispatch({ type: ActionTypes.END_USER_REQUEST })
+            } catch {
+                userContext.dispatch({ type: ActionTypes.SET_USER_ERROR })
+            }
+        }
 
-        userContext.dispatch({ type: 'END_USER_REQUEST' })
-    } catch {
-        userContext.dispatch({ type: 'ERROR_USER_REQUEST' })
-    }
+        testCall()
+    }, [])
+    return userInfo?.req
 }

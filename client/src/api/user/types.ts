@@ -4,7 +4,8 @@ export type GetUserReponse = {
         createdAt: string
         updatedAt: string
         email: string
-        firstName: string | null
-        lastName: string | null
+        firstName: string | undefined
+        lastName: string | undefined
+        tickets: number[]
     }
 }

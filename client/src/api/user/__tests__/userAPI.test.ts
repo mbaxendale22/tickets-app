@@ -1,5 +1,6 @@
 import axios from 'axios'
 import moxios from 'moxios'
+
 import { mockGetUserResponse } from './mockAPIData'
 
 describe('User API Calls', () => {
