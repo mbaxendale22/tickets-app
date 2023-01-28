@@ -2,8 +2,8 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { APIStatus } from './context/contextTypes'
-import { useUserContext } from './context/userContext'
+import { APIStatus } from '../../context/contextTypes'
+import { useUserContext } from '../../context/userContext'
 
 interface FormValues {
     email: string
@@ -49,20 +49,40 @@ export const LoginForm: React.FC = () => {
                                 htmlFor="email">
                                 Email
                             </label>
-                            <Field
-                                className={`w-full p-2 rounded-lg border-blue-600 border-2 ${
-                                    errors.email && touched.email
-                                        ? 'border-red-500'
-                                        : 'border-gray-300'
-                                }`}
-                                name="email"
-                                type="email"
-                            />
-                            <ErrorMessage
-                                name="email"
-                                component="div"
-                                className="text-red-500 text-xs font-medium"
-                            />
+                            <div className="form-control">
+                                <div className="input-group">
+                                    <Field
+                                        className={`input input-bordered ${
+                                            errors.email && touched.email
+                                                ? 'border-red-500'
+                                                : 'border-gray-300'
+                                        }`}
+                                        name="email"
+                                        type="email"
+                                    />
+                                    <ErrorMessage
+                                        name="email"
+                                        component="div"
+                                        className="text-red-500 text-xs font-medium"
+                                    />
+
+                                    <button className="btn btn-square">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="mb-4">
@@ -102,4 +122,8 @@ export const LoginForm: React.FC = () => {
         </div>
         // </div>
     )
+}
+
+export default function LoginInput() {
+    return <div>LoginInput</div>
 }

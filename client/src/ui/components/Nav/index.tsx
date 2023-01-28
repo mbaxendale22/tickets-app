@@ -1,5 +1,4 @@
-import type { MouseEventHandler } from 'react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 
 export const Nav = () => {
     // eventually you'll want to pass this in as a prop
