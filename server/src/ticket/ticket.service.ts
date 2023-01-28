@@ -10,6 +10,9 @@ export class TicketService {
       where: {
         userId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 

@@ -1,6 +1,5 @@
 export interface NewTicket {
-    completed?: string
-    userId: number
+    completed: string
     title: string
     description?: string
     epic?: string

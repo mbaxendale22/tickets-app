@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/default
 import React, { createContext, useContext, useReducer } from 'react'
 
-import { createNewTicket, getTickets } from '../api/Tickets'
+import { createNewTicket, deleteTicketById, getTickets } from '../api/Tickets'
 import type { NewTicket } from '../api/Tickets/types'
 
 import type { TicketState } from './contextTypes'
@@ -13,8 +13,8 @@ export const initialState: TicketState = {
     // these act as thunks, to dispatch the actions in correct order
     getTickets: async () => 'no-op',
     createTicket: async (ticket: NewTicket) => console.log(ticket),
-    updateTicket: async () => 'no-op',
-    deleteTicket: async () => 'no-op',
+    updateTicket: async (id: number) => console.log(id),
+    deleteTicket: async (id: number) => console.log(id),
 }
 
 const TicketContext = createContext(initialState)
@@ -46,6 +46,11 @@ function ticketReducer(
                 ...state,
                 ...initialState,
             }
+        case TicketActionTypes.REMOVE_TICKET:
+            return {
+                ...state,
+                ...initialState,
+            }
 
         default:
             return state
@@ -69,14 +74,12 @@ export const TicketContextProvider: React.FC<Props> = ({ children }) => {
                     type: TicketActionTypes.SET_TICKETS,
                     payload: tickets,
                 })
+                dispatch({ type: TicketActionTypes.END_TICKET_REQUEST })
             } catch (error) {
                 dispatch({ type: TicketActionTypes.SET_TICKET_ERROR })
-            } finally {
-                dispatch({ type: TicketActionTypes.END_TICKET_REQUEST })
             }
         },
         createTicket: async (ticket: NewTicket) => {
-            console.log('*******')
             dispatch({ type: TicketActionTypes.START_TICKET_REQUEST })
             try {
                 // make the api call
@@ -86,10 +89,27 @@ export const TicketContextProvider: React.FC<Props> = ({ children }) => {
                     type: TicketActionTypes.ADD_TICKET,
                     payload: ticket,
                 })
+                dispatch({ type: TicketActionTypes.END_TICKET_REQUEST })
             } catch (error) {
                 dispatch({ type: TicketActionTypes.SET_TICKET_ERROR })
-            } finally {
+            }
+        },
+        updateTicket: async () => 'no-op',
+        deleteTicket: async (id: number) => {
+            dispatch({ type: TicketActionTypes.START_TICKET_REQUEST })
+            try {
+                await deleteTicketById(id)
                 dispatch({ type: TicketActionTypes.END_TICKET_REQUEST })
+                // remove from STATE for optimistic UI update
+                const updatedArr = state.tickets.filter(
+                    (ticket) => ticket.id !== id,
+                )
+                dispatch({
+                    type: TicketActionTypes.SET_TICKETS,
+                    payload: updatedArr,
+                })
+            } catch (error) {
+                dispatch({ type: TicketActionTypes.SET_TICKET_ERROR })
             }
         },
     }

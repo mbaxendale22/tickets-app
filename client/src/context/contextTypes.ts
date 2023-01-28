@@ -42,6 +42,7 @@ export enum TicketActionTypes {
     END_TICKET_REQUEST = 'END_TICKET_REQUEST',
     SET_TICKETS = 'SET_TICKETS',
     ADD_TICKET = 'ADD_TICKET',
+    REMOVE_TICKET = 'REMOVE_TICKET',
     RESET_TICKETS = 'RESET_TICKETS',
 }
 
@@ -65,6 +66,6 @@ export interface TicketState {
     apiStatus: APIStatus
     getTickets: () => void
     createTicket: (ticket: NewTicket) => void
-    updateTicket: () => void
-    deleteTicket: () => void
+    updateTicket: (id: number) => void
+    deleteTicket: (id: number) => void
 }

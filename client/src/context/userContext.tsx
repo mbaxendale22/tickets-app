@@ -76,7 +76,6 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
         apiStatus: state.apiStatus,
 
         login: async (email: string, password: string) => {
-            console.log('login called', email)
             dispatch({ type: UserActionTypes.START_USER_REQUEST })
             try {
                 await loginUser(email, password)

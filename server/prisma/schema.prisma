@@ -31,8 +31,8 @@ model Ticket {
 
     completed DateTime
 
-    user User @relation(fields: [id], references: [id], onDelete: Cascade )
     userId Int
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade )
 
     title             String
     description       String?

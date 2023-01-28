@@ -36,7 +36,6 @@ export class TicketController {
 
   @Post()
   createTicket(@GetUser('id') userId: number, @Body() dto: CreateTicketDto) {
-    console.log('***** hello');
     return this.ticketService.createTicket(userId, dto);
   }
 
