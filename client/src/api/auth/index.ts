@@ -9,15 +9,13 @@ export async function loginUser(
     password: string,
 ): Promise<PostLogin | undefined> {
     try {
-        const response = await axios.post<PostLogin>(
-            'http://localhost:3333/auth/login',
-            {
-                email,
-                password,
-            },
-        )
-        console.log(response.data)
-        setTokenInLocalStorage(response.data.access_token)
+        const response = await axios.post('http://localhost:3333/auth/login', {
+            email,
+            password,
+        })
+
+        const { access_token } = response.data
+        setTokenInLocalStorage(access_token)
         return response.data
     } catch (error) {
         console.log(error)

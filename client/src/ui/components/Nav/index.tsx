@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import * as React from 'react'
 
 export const Nav = () => {
     // eventually you'll want to pass this in as a prop
-    const [activeButton, setActiveButton] = useState<string>('1')
+    const [activeButton, setActiveButton] = React.useState<string>('1')
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const button = event.target as HTMLButtonElement
@@ -19,7 +19,7 @@ export const Nav = () => {
                 onClick={handleClick}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
+                    className="h-6 w-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -39,15 +39,15 @@ export const Nav = () => {
                 onClick={handleClick}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6">
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>
             </button>
@@ -59,15 +59,15 @@ export const Nav = () => {
                 onClick={handleClick}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6">
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
                     />
                 </svg>
             </button>

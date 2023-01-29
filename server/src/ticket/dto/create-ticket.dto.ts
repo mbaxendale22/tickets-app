@@ -27,7 +27,4 @@ export class CreateTicketDto {
   @IsOptional()
   @IsString()
   link?: string;
-
-  @IsString()
-  completed: string;
 }

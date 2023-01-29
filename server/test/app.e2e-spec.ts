@@ -149,7 +149,6 @@ describe('App e2e', () => {
         const completed = x.toISOString();
         const dto: CreateTicketDto = {
           title: 'my test ticket',
-          completed,
         };
         return pactum
           .spec()
@@ -159,7 +158,7 @@ describe('App e2e', () => {
           })
           .withBody(dto)
           .expectStatus(201)
-          .stores('bookmarkId', 'id');
+          .stores('ticketId', 'id');
       });
     });
     describe('Get Tickets', () => {
@@ -182,9 +181,9 @@ describe('App e2e', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .withPathParams('id', '$S{bookmarkId}')
+          .withPathParams('id', '$S{ticketId}')
           .expectStatus(200)
-          .expectBodyContains('$S{bookmarkId}');
+          .expectBodyContains('$S{ticketId}');
       });
     });
 
@@ -200,7 +199,7 @@ describe('App e2e', () => {
             .withHeaders({
               Authorization: 'Bearer $S{userAt}',
             })
-            .withPathParams('id', '$S{bookmarkId}')
+            .withPathParams('id', '$S{ticketId}')
             .withBody(dto)
             .expectStatus(200)
             .expectBodyContains(dto.comfort_level);
@@ -215,7 +214,7 @@ describe('App e2e', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .withPathParams('id', '$S{bookmarkId}')
+          .withPathParams('id', '$S{ticketId}')
           .expectStatus(204);
       });
       it('should get empty tickets', () => {

@@ -5,6 +5,7 @@ module.exports = {
     theme: {
         extend: {},
     },
+    // TODO REMOVE UNUSED THEMES
     daisyui: {
         themes: [
             'light',

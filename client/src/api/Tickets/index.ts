@@ -16,7 +16,6 @@ export async function getTickets(): Promise<Ticket[] | undefined> {
                 },
             },
         )
-        console.log(response.data)
         return response.data
     } catch (error) {
         console.log(error)

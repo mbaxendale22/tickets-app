@@ -50,7 +50,6 @@ export interface Ticket {
     id: number | null
     createdAt: string
     updatedAt: string
-    completed?: string
     userId: number
     title: string
     description?: string

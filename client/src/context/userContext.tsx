@@ -6,6 +6,7 @@ import { getUser } from '../api/user'
 
 import type { UserState } from './contextTypes'
 import { APIStatus, UserActionTypes } from './contextTypes'
+import { useTicketContext } from './ticketContext'
 
 export const initialState: UserState = {
     userData: {
@@ -63,6 +64,7 @@ interface Props {
 
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(userReducer, initialState)
+    const { getTickets } = useTicketContext()
     const value = {
         userData: {
             id: state.userData.id,
@@ -79,6 +81,16 @@ export const UserContextProvider: React.FC<Props> = ({ children }) => {
             dispatch({ type: UserActionTypes.START_USER_REQUEST })
             try {
                 await loginUser(email, password)
+                const user = await getUser()
+                dispatch({
+                    type: UserActionTypes.SET_USER,
+                    payload: user?.req,
+                })
+
+                dispatch({
+                    type: UserActionTypes.END_USER_REQUEST,
+                })
+
                 dispatch({ type: UserActionTypes.END_USER_REQUEST })
             } catch (error) {
                 dispatch({ type: UserActionTypes.SET_USER_ERROR })
