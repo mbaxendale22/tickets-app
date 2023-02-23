@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { InfoIcon } from '../../../../assets/Icons'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
 import {
-    TicketIsErrorSelector,
+    // TicketIsErrorSelector,
     TicketIsLoadingSelector,
 } from '../../../../redux/ticketSlice'
 import { createTicketThunk } from '../../../../thunks/createTicketThunk'
@@ -25,7 +25,7 @@ interface FormValues {
 
 export const CreateTicket: React.FC = () => {
     const isLoading = useAppSelector(TicketIsLoadingSelector)
-    const isError = useAppSelector(TicketIsErrorSelector).error
+    // const isError = useAppSelector(TicketIsErrorSelector).error
 
     const dispatch = useAppDispatch()
 

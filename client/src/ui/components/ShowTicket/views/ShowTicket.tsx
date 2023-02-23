@@ -1,22 +1,27 @@
 import * as React from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { useApplicationContext } from '../../../../context/application'
-import type { Ticket } from '../../../../context/contextTypes'
+import {
+    isInEditModeSelector,
+    setIsInEditMode,
+} from '../../../../redux/applicationSlice'
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
+import { TicketByIdSelector } from '../../../../redux/ticketSlice'
 import { formatDate } from '../../../../utils/format'
 import { Nav } from '../../Nav'
 
 import { DisplayTicket } from './DisplayTicket'
 import { EditTicket } from './EditTicket'
 
-// interface Props {
-//     myProp: string
-// }
-
 export const ShowTicket = () => {
-    // const { myProp } = props
-    const { state }: { state: Ticket } = useLocation()
-    const { isInEditMode, setIsInEditMode } = useApplicationContext()
+    const location = useLocation()
+    const ticket = useAppSelector(TicketByIdSelector(location.state))
+    const isInEditMode = useAppSelector(isInEditModeSelector)
+    const dispatch = useAppDispatch()
+
+    if (!ticket) {
+        return null
+    }
 
     const {
         id,
@@ -29,11 +34,11 @@ export const ShowTicket = () => {
         link,
         createdAt,
         updatedAt,
-    } = state
+    } = ticket
 
     const formattedCreatedAt = formatDate(createdAt)
     const formattedUpdatedAt = formatDate(updatedAt)
-    const toggleEditMode = () => setIsInEditMode(!isInEditMode)
+    const toggleEditMode = () => dispatch(setIsInEditMode(!isInEditMode))
 
     return (
         <div className="h-screen w-full">
@@ -42,6 +47,7 @@ export const ShowTicket = () => {
             </button>
             {isInEditMode ? (
                 <EditTicket
+                    id={id}
                     title={title}
                     description={description}
                     epic={epic}

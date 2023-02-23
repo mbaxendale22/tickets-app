@@ -1,6 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { createSlice } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 
+import type { NewTicket } from '../api/Tickets/types'
 import type { RootState } from '../types/redux'
 
 export interface Ticket {
@@ -27,6 +28,11 @@ export type TicketState = {
     }
     tickets: Ticket[]
     ticketInFocus: number
+}
+
+export type UpdateTicketUI = {
+    id: number
+    newTicket: NewTicket
 }
 
 export const initialState: TicketState = {
@@ -60,6 +66,7 @@ export const ticketSlice = createSlice({
             state.api.isLoading = false
             state.api.isError.error = false
         },
+
         // used to set the initial state with value retrieved from the server
         setTickets: (state, action: PayloadAction<Ticket[]>) => {
             state.tickets = action.payload
@@ -75,9 +82,20 @@ export const ticketSlice = createSlice({
             )
         },
         // update a ticket in state - for optimistic updates
-        updateTicket: (state, action: PayloadAction<Ticket>) => {
+        updateTicket: (state, action: PayloadAction<UpdateTicketUI>) => {
+            const originalTicket = state.tickets.find(
+                (ticket) => ticket.id === action.payload.id,
+            )
+            if (!originalTicket) {
+                return
+            }
+            const updatedTicket = {
+                ...originalTicket,
+                ...action.payload.newTicket,
+            }
+
             state.tickets = state.tickets.map((ticket) =>
-                ticket.id === action.payload.id ? action.payload : ticket,
+                ticket.id === action.payload.id ? updatedTicket : ticket,
             )
         },
         setTicketInFocus: (state, action: PayloadAction<number>) => {
@@ -108,5 +126,11 @@ export const TicketIsLoadingSelector = ({ tickets }: RootState) =>
 export const TicketIsErrorSelector = ({ tickets }: RootState) =>
     tickets.api.isError
 export const TicketSelector = ({ tickets }: RootState) => tickets.tickets
+
 export const TicketInFocusSelector = ({ tickets }: RootState) =>
     tickets.ticketInFocus
+
+export const TicketByIdSelector = (id: number) =>
+    createSelector(TicketSelector, (tickets) => {
+        return tickets.find((ticket) => ticket.id === id)
+    })
