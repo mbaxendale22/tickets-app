@@ -3,8 +3,12 @@ import * as React from 'react'
 import * as Yup from 'yup'
 
 import { EmailIcon, EyeIcon, EyeSlashedIcon } from '../../../assets/Icons'
-import { APIStatus } from '../../../context/contextTypes'
-import { useUserContext } from '../../../context/userContext'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import {
+    UserIsErrorSelector,
+    UserIsLoadingSelector,
+} from '../../../redux/userSlice'
+import { loginThunk } from '../../../thunks/loginThunk'
 
 interface FormValues {
     email: string
@@ -12,7 +16,12 @@ interface FormValues {
 }
 
 export const LoginForm: React.FC = () => {
-    const { login, apiStatus } = useUserContext()
+    const isLoading = useAppSelector(UserIsLoadingSelector)
+    const isError = useAppSelector(UserIsErrorSelector).error
+
+    console.log('isError', isError)
+
+    const dispatch = useAppDispatch()
     const [showPassword, setShowPassword] = React.useState(false)
     const initialValues: FormValues = {
         email: '',
@@ -26,12 +35,9 @@ export const LoginForm: React.FC = () => {
         password: Yup.string().required('Password is required'),
     })
 
-    const isLoading = apiStatus === APIStatus.LOADING
-    const isError = apiStatus === APIStatus.ERROR
-
     const handleSubmit = (values: FormValues) => {
         const { email, password } = values
-        login(email, password)
+        dispatch(loginThunk(email, password))
     }
 
     const handleShowPassword = (e: any) => {

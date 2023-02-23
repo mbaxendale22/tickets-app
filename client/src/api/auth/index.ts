@@ -1,22 +1,16 @@
 import axios from 'axios'
 
-import { setTokenInLocalStorage } from '../../utils/user'
-
-import type { PostLogin } from './types'
-
 export async function loginUser(
     email: string,
     password: string,
-): Promise<PostLogin | undefined> {
+): Promise<string | undefined> {
     try {
         const response = await axios.post('http://localhost:3333/auth/login', {
             email,
             password,
         })
-
         const { access_token } = response.data
-        setTokenInLocalStorage(access_token)
-        return response.data
+        return access_token
     } catch (error) {
         console.log(error)
         return undefined

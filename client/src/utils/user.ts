@@ -6,8 +6,7 @@ export const setTokenInLocalStorage = (token: string) => {
     window.localStorage.setItem('token', token) // set token in local storage
 }
 
-export const getPayload = () => {
-    const token = getTokenFromLocalStorage() // store the response of get token function in variable
+export const getPayload = (token: string) => {
     if (!token) {
         return undefined
     } // if no token exists just return here
@@ -19,8 +18,8 @@ export const getPayload = () => {
     return JSON.parse(atob(payloadString)) // decode the payload string, using json.parse to convert from JSON to JS object
 }
 
-export const userIsAuthenticated = () => {
-    const payload = getPayload() // get payload part of the token by calling get payload function
+export const userIsAuthenticated = (token: string) => {
+    const payload = getPayload(token) // get payload part of the token by calling get payload function
     if (!payload) {
         return false
     } // if there is no payload returned function returns false

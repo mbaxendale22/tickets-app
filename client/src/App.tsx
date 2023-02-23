@@ -1,21 +1,27 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useUserContext } from './context/userContext'
+import { useAppDispatch, useAppSelector } from './redux/hooks'
+import { UserAccessTokenSelector } from './redux/userSlice'
+import { userDataThunk } from './thunks/userDataThunk'
 import { LoginForm } from './ui/Login'
 import { userIsAuthenticated } from './utils/user'
 
 export const App = () => {
     const navigate = useNavigate()
 
-    const userIsLoggedIn = userIsAuthenticated()
-    const { userData } = useUserContext()
+    const token = useAppSelector(UserAccessTokenSelector)
+    const dispatch = useAppDispatch()
 
+    const userIsLoggedIn = userIsAuthenticated(token)
+
+    //! TODO navigate to seperate page if user has no tickets
     React.useEffect(() => {
         if (userIsLoggedIn) {
+            dispatch(userDataThunk())
             navigate('/tickets')
         }
-    }, [userIsLoggedIn, navigate, userData])
+    }, [userIsLoggedIn, navigate, token])
 
     return (
         <div className="w-full h-screen flex flex-col items-center justify-evenly">

@@ -2,7 +2,14 @@ import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { EditIcon, TrashBinIcon } from '../../../../assets/Icons'
-import { useTicketContext } from '../../../../context/ticketContext'
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
+import {
+    removeTicket,
+    setTicketInFocus,
+    TicketInFocusSelector,
+    TicketSelector,
+} from '../../../../redux/ticketSlice'
+import { deleteTicketThunk } from '../../../../thunks/deleteTicketThunk'
 import { formatDate } from '../../../../utils/format'
 
 interface Props {
@@ -12,22 +19,34 @@ interface Props {
 
 export const Row = (props: Props) => {
     const { index, style } = props
-    const { tickets, deleteTicket } = useTicketContext()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
+
+    const tickets = useAppSelector(TicketSelector)
+    const ticketInFocus = useAppSelector(TicketInFocusSelector)
+    //TODO might want to move this out to global state
     const currentTicket = tickets[index]
+
     const createdOn = formatDate(currentTicket.createdAt)
+
     const handleUpdateTicket = () => {
         navigate(`/tickets/${currentTicket.id}`, { state: currentTicket })
     }
 
-    // TODO you'll want to add a confirmation dialog here
-    const handleDeleteTicket = () => {
-        if (!currentTicket) {
-            return
-        }
-        deleteTicket(currentTicket.id || 0)
-        console.log('delete ticket')
+    const selectTicketToBeDeleted = () => {
+        dispatch(setTicketInFocus(currentTicket.id || 0))
     }
+
+    const handleDeleteTicket = () => {
+        // optisimistic update
+        dispatch(removeTicket(ticketInFocus))
+        // api call
+        dispatch(deleteTicketThunk(ticketInFocus))
+    }
+
+    const popupBody = `once it's gone, it's gone forever`
+
+    console.log('ticketInFocus', ticketInFocus)
 
     return (
         <div
@@ -39,7 +58,7 @@ export const Row = (props: Props) => {
                 <button onClick={handleUpdateTicket}>
                     <EditIcon />
                 </button>
-                <button>
+                <button onClick={selectTicketToBeDeleted}>
                     <div className="modal-action mt-0">
                         <label htmlFor="my-modal">
                             <TrashBinIcon />
@@ -49,20 +68,22 @@ export const Row = (props: Props) => {
             </div>
 
             <input type="checkbox" id="my-modal" className="modal-toggle" />
+
             <div className="modal">
                 <div className="modal-box">
-                    <h3 className="font-bold text-lg">
+                    <h3 className="font-bold text-lg text-center">
                         Are you sure you want to delete this ticket?
                     </h3>
-                    <p className="py-4 text-center">
-                        ${`Once it's deleted, it's gone forever`}.
-                    </p>
+                    <p className="py-4 text-center">{popupBody}</p>
                     <div className="flex w-full justify-evenly">
-                        <button
-                            onClick={handleDeleteTicket}
-                            className="btn btn-success">
-                            Confirm
-                        </button>
+                        <div className="modal-action mt-0">
+                            <label
+                                onClick={handleDeleteTicket}
+                                className="btn btn-success"
+                                htmlFor="my-modal">
+                                Confirm
+                            </label>
+                        </div>
                         <div className="modal-action mt-0">
                             <label htmlFor="my-modal" className="btn btn-error">
                                 cancel

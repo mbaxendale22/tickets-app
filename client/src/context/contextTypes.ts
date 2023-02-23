@@ -68,3 +68,15 @@ export interface TicketState {
     updateTicket: (id: number) => void
     deleteTicket: (id: number) => void
 }
+
+export interface ApplicationState {
+    navstate: string
+    isInEditMode: boolean
+    setNavstate: (id: string) => void
+    setIsInEditMode: (editMode: boolean) => void
+}
+
+export enum ApplicationActionTypes {
+    SET_NAVSTATE = 'SET_NAVSTATE',
+    SET_EDITMODE = 'SET_EDITMODE',
+}

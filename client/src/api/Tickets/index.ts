@@ -4,9 +4,7 @@ import type { Ticket } from '../../context/contextTypes'
 
 import type { NewTicket } from './types'
 
-const token = window.localStorage.getItem('token')
-
-export async function getTickets(): Promise<Ticket[] | undefined> {
+export async function getTickets(token: string): Promise<Ticket[] | undefined> {
     try {
         const response = await axios.get<Ticket[]>(
             'http://localhost:3333/ticket',
@@ -23,7 +21,7 @@ export async function getTickets(): Promise<Ticket[] | undefined> {
     }
 }
 
-export async function createNewTicket(newTicket: NewTicket) {
+export async function createNewTicket(newTicket: NewTicket, token: string) {
     try {
         const response = await axios.post<NewTicket>(
             'http://localhost:3333/ticket',
@@ -41,7 +39,7 @@ export async function createNewTicket(newTicket: NewTicket) {
         return undefined
     }
 }
-export async function deleteTicketById(ticketId: number) {
+export async function deleteTicketById(ticketId: number, token: string) {
     try {
         const response = await axios.delete(
             `http://localhost:3333/ticket/${ticketId}`,

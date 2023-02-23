@@ -1,21 +1,40 @@
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { useApplicationContext } from '../../../context/application'
 
 export const Nav = () => {
     // eventually you'll want to pass this in as a prop
-    const [activeButton, setActiveButton] = React.useState<string>('1')
+    const { navstate, setNavstate } = useApplicationContext()
+    const navigate = useNavigate()
+
+    const selectScreen = (id: string) => {
+        switch (id) {
+            case '1':
+                navigate('/tickets')
+                break
+            case '2':
+                navigate('/tickets/create')
+                break
+            case '3':
+                navigate('/tickets/sort')
+                break
+            default:
+                break
+        }
+    }
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const button = event.target as HTMLButtonElement
-        setActiveButton(button.id)
+        setNavstate(button.id)
+        selectScreen(button.id)
     }
 
     return (
         <div className="btm-nav">
             <button
                 id="1"
-                className={`text-success ${
-                    activeButton === '1' ? 'active' : ''
-                }`}
+                className={`text-success ${navstate === '1' ? 'active' : ''}`}
                 onClick={handleClick}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -32,9 +51,7 @@ export const Nav = () => {
                 </svg>
             </button>
             <button
-                className={`text-success ${
-                    activeButton === '2' ? 'active' : ''
-                }`}
+                className={`text-success ${navstate === '2' ? 'active' : ''}`}
                 id="2"
                 onClick={handleClick}>
                 <svg
@@ -52,9 +69,7 @@ export const Nav = () => {
                 </svg>
             </button>
             <button
-                className={`text-success ${
-                    activeButton === '3' ? 'active' : ''
-                }`}
+                className={`text-success ${navstate === '3' ? 'active' : ''}`}
                 id="3"
                 onClick={handleClick}>
                 <svg
