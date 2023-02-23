@@ -18,15 +18,18 @@ export const TicketList = () => {
     const tickets = useAppSelector(TicketSelector)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const listHeight = window.innerHeight / 2
 
     const numOfTickets = tickets.length
-    // const userHasNoTickets = tickets.length === 0
+    const userHasNoTickets = tickets.length === 0
 
     const checkForExistingTickets = () => {
         dispatch(userDataThunk())
     }
     React.useEffect(() => {
-        checkForExistingTickets()
+        if (userHasNoTickets) {
+            checkForExistingTickets()
+        }
     }, [])
 
     const handleLogout = () => {
@@ -34,15 +37,18 @@ export const TicketList = () => {
         navigate('/')
     }
 
-    //TODO this need a mechanism for this
-    // if (userHasNoTickets) {
-    //     return (
-    //         <>
-    //             <div>{`Looks like you don't have any tickets yet`}</div>
-    //             <button>Click here</button>
-    //         </>
-    //     )
-    // }
+    //TODO need to style this
+    if (userHasNoTickets) {
+        return (
+            <>
+                <div>{`Looks like you don't have any tickets yet`}</div>
+                <button>Click here to get started</button>
+                <Nav />
+            </>
+        )
+    }
+
+    console.log('tickets', tickets)
     return (
         <div className="w-full h-full flex flex-col space-y-12">
             {!isLoading ? (
@@ -53,8 +59,9 @@ export const TicketList = () => {
                     <button className="btn btn-primary" onClick={handleLogout}>
                         Log out
                     </button>
-                    <AutoSizer>
-                        {({ height, width }) => (
+
+                    <AutoSizer disableHeight>
+                        {({ height = listHeight, width }) => (
                             <List
                                 className="List"
                                 height={height}
@@ -65,6 +72,7 @@ export const TicketList = () => {
                             </List>
                         )}
                     </AutoSizer>
+
                     <Nav />
                 </>
             ) : (

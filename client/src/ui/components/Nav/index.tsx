@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useApplicationContext } from '../../../context/application'
+import { navstateSelector, setNavState } from '../../../redux/applicationSlice'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 
 export const Nav = () => {
     // eventually you'll want to pass this in as a prop
-    const { navstate, setNavstate } = useApplicationContext()
+    const dispatch = useAppDispatch()
+    const navstate = useAppSelector(navstateSelector)
     const navigate = useNavigate()
 
     const selectScreen = (id: string) => {
@@ -26,7 +28,7 @@ export const Nav = () => {
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const button = event.target as HTMLButtonElement
-        setNavstate(button.id)
+        dispatch(setNavState(button.id))
         selectScreen(button.id)
     }
 

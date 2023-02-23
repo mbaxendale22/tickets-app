@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { App } from './App'
-import { ApplicationContextProvider } from './context/application'
 import { persistor, store } from './redux/store'
 import './index.css'
 import { CreateTicket } from './ui/components/CreateTicket'
@@ -27,7 +26,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/tickets/create',
-        element: <CreateTicket myProp="hello" />,
+        element: <CreateTicket />,
         errorElement: <ErrorPage />,
     },
     {
@@ -46,9 +45,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <ApplicationContextProvider>
-                    <RouterProvider router={router} />
-                </ApplicationContextProvider>
+                <RouterProvider router={router} />
             </PersistGate>
         </Provider>
     </React.StrictMode>,

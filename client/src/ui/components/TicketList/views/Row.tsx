@@ -46,14 +46,12 @@ export const Row = (props: Props) => {
 
     const popupBody = `once it's gone, it's gone forever`
 
-    console.log('ticketInFocus', ticketInFocus)
-
     return (
         <div
             style={style}
             className="flex justify-center align-center border-2 border-success px-4 rounded-md">
             <div className="flex justify-between items-center w-full">
-                <p>{tickets[index].title}</p>
+                <p className="w-1/2 flex-shrink-1">{tickets[index].title}</p>
                 <p>{createdOn}</p>
                 <button onClick={handleUpdateTicket}>
                     <EditIcon />
