@@ -21,6 +21,8 @@ type Props = {
     updatedAt: string
 }
 
+//TODO Editing comfort level is failing, check create ticket api call and match up types (being sent as a string)
+
 export const EditTicket = (props: Props) => {
     const {
         id,
@@ -344,12 +346,12 @@ export const EditTicket = (props: Props) => {
                             </div>
                         </div>
 
-                        <div className="flex justify-center w-1/2 mt-4">
+                        <div className="flex justify-center w-full sm:w-1/2 mt-4">
                             <button
                                 className="btn btn-primary w-[45%] mr-1"
                                 type="submit"
                                 disabled={isLoading}>
-                                {isLoading ? 'Loading...' : 'Save Changes'}
+                                {isLoading ? 'Loading...' : 'Save'}
                             </button>
 
                             <button

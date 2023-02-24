@@ -125,7 +125,7 @@ export const LoginForm: React.FC = () => {
 
                         {isError && (
                             <div className="text-red-500 text-xs font-medium">
-                                {"Error: Couldn't log in"}
+                                {'Either your email or password is incorrect.'}
                             </div>
                         )}
 

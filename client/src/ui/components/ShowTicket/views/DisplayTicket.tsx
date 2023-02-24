@@ -13,34 +13,55 @@ type Props = {
 }
 
 export const DisplayTicket = (props: Props) => {
-    const {
-        title,
-        description,
-        epic,
-        comfort_level,
-        learning_outcomes,
-        reflections,
-        link,
-        createdAt,
-        updatedAt,
-    } = props
+    const { title } = props
+
+    const captilise = (str: string) =>
+        str.charAt(0).toUpperCase() + str.slice(1)
+
+    const createArrayfromProps = () => {
+        const arr = []
+        for (const [key, value] of Object.entries(props)) {
+            if (key === 'title') {
+                continue
+            }
+            if (key === 'comfort_level') {
+                arr.push({ key: 'comfort level', value })
+                continue
+            }
+            if (key === 'createdAt') {
+                arr.push({ key: 'created on', value })
+                continue
+            }
+            if (key === 'updatedAt') {
+                arr.push({ key: 'last updated', value })
+                continue
+            }
+            if (value) {
+                arr.push({ key, value })
+            }
+        }
+        return arr
+    }
+
+    const data = createArrayfromProps()
+
     return (
-        <>
-            <h1 className="border-b-2 border-accent text-5xl">{title}</h1>
-            <h2>{description || ''}</h2>
-            <h3>{`Epic: ${epic || 'no epic attached'}`}</h3>
-            <p>{`Ticket Created: ${createdAt}`}</p>
-            <p>{`Ticket Last Updated: ${updatedAt}`}</p>
-            <p>{comfort_level || ''}</p>
-            <p>{`General Reflections: ${
-                reflections || 'no reflections yet'
-            }`}</p>
-            <p>
-                {`Learning Outcomes: ${
-                    learning_outcomes || 'no learning outcomes yet'
-                }`}
-            </p>
-            <p>{link || ''}</p>
-        </>
+        <div>
+            <h1 className="border-b-2 border-accent text-5xl px-8 pt-8 pb-2">
+                {title}
+            </h1>
+            <div className="flex flex-col justify-center items-center mt-4">
+                {data.map((item, index) => {
+                    return (
+                        <div
+                            className="bg-slate-900 rounded-xl p-4 w-full sm:w-1/2 mb-4"
+                            key={index}>
+                            <h2 className="text-2xl">{captilise(item.key)}</h2>
+                            <p>{item.value}</p>
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
     )
 }

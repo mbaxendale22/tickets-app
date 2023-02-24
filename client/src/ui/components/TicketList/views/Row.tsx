@@ -21,13 +21,20 @@ export const Row = (props: Props) => {
     const { index, style } = props
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    // const [createdOn, setCreatedOn] = React.useState<string>('')
+    console.log(window.innerWidth)
 
     const tickets = useAppSelector(TicketSelector)
     const ticketInFocus = useAppSelector(TicketInFocusSelector)
     //TODO might want to move this out to global state
     const currentTicket = tickets[index]
 
-    const createdOn = formatDate(currentTicket.createdAt)
+    const dateFormat = window.innerWidth > 500 ? 'long' : 'short'
+    // React.useEffect(() => {
+    //   console.log('ticketInFocus', ticketInFocus)
+    // }, [ticketInFocus])
+
+    const createdOn = formatDate(currentTicket.createdAt, dateFormat)
 
     const handleUpdateTicket = () => {
         if (!currentTicket.id) {

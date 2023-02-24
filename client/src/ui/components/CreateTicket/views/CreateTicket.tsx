@@ -13,6 +13,8 @@ import { Nav } from '../../Nav'
 
 // import { EmailIcon, EyeIcon, EyeSlashedIcon } from '../../../assets/Icons'
 
+//TODO only learning outcomes has responsive design.
+
 interface FormValues {
     title: string
     description: string
@@ -179,11 +181,11 @@ export const CreateTicket: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="mb-4 w-3/4 flex flex-col justify-center items-center">
+                        <div className="mb-4 w-full sm:w-3/4 flex flex-col justify-center items-center">
                             <div className=" flex w-3/4 mb-2">
-                                <div className="w-1/3"></div>
+                                <div className="sm:w-1/3"></div>
                                 <label
-                                    className="flex justify-center items-center text-gray-400 font-medium w-1/3"
+                                    className="flex justify-center items-center text-gray-400 font-medium sm:w-1/2"
                                     htmlFor="learning_outcomes">
                                     Learning Outcomes
                                 </label>
@@ -195,7 +197,7 @@ export const CreateTicket: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="form-control w-3/4">
+                            <div className="form-control w-full sm:w-3/4">
                                 <div className="input-group">
                                     <Field
                                         as="textarea"

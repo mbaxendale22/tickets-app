@@ -36,15 +36,12 @@ export const ShowTicket = () => {
         updatedAt,
     } = ticket
 
-    const formattedCreatedAt = formatDate(createdAt)
-    const formattedUpdatedAt = formatDate(updatedAt)
+    const formattedCreatedAt = formatDate(createdAt, 'long')
+    const formattedUpdatedAt = formatDate(updatedAt, 'long')
     const toggleEditMode = () => dispatch(setIsInEditMode(!isInEditMode))
 
     return (
-        <div className="h-screen w-full">
-            <button className="btn btn-primary" onClick={toggleEditMode}>
-                {isInEditMode ? 'Save' : 'Edit'}
-            </button>
+        <div className="h-screen w-full flex flex-col">
             {isInEditMode ? (
                 <EditTicket
                     id={id}
@@ -71,6 +68,13 @@ export const ShowTicket = () => {
                     updatedAt={formattedUpdatedAt}
                 />
             )}
+            {!isInEditMode ? (
+                <button
+                    className="btn btn-primary self-center w-48"
+                    onClick={toggleEditMode}>
+                    Edit Ticket
+                </button>
+            ) : null}
 
             <Nav />
         </div>
