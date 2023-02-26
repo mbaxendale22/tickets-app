@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from './redux/hooks'
 import { UserAccessTokenSelector } from './redux/userSlice'
 import { userDataThunk } from './thunks/userDataThunk'
-import { LoginForm } from './ui/Login'
+import { LoginForm } from './ui/components/Login'
 import { userIsAuthenticated } from './utils/user'
 
 export const App = () => {

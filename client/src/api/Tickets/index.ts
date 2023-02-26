@@ -20,6 +20,25 @@ export async function getTickets(token: string): Promise<Ticket[] | undefined> {
         return undefined
     }
 }
+export async function getTicketById(
+    ticketId: number,
+    token: string,
+): Promise<Ticket | undefined> {
+    try {
+        const response = await axios.get<Ticket>(
+            `http://localhost:3333/ticket/${ticketId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        )
+        return response.data
+    } catch (error) {
+        console.log(error)
+        return undefined
+    }
+}
 
 export async function createNewTicket(newTicket: NewTicket, token: string) {
     try {

@@ -2,13 +2,13 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { EmailIcon, EyeIcon, EyeSlashedIcon } from '../../../assets/Icons'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { EmailIcon, EyeIcon, EyeSlashedIcon } from '../../../../assets/Icons'
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
 import {
     UserIsErrorSelector,
     UserIsLoadingSelector,
-} from '../../../redux/userSlice'
-import { loginThunk } from '../../../thunks/loginThunk'
+} from '../../../../redux/userSlice'
+import { loginThunk } from '../../../../thunks/loginThunk'
 
 interface FormValues {
     email: string
@@ -18,8 +18,6 @@ interface FormValues {
 export const LoginForm: React.FC = () => {
     const isLoading = useAppSelector(UserIsLoadingSelector)
     const isError = useAppSelector(UserIsErrorSelector).error
-
-    console.log('isError', isError)
 
     const dispatch = useAppDispatch()
     const [showPassword, setShowPassword] = React.useState(false)

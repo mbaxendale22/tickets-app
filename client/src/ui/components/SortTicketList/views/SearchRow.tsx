@@ -6,8 +6,8 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
 import {
     removeTicket,
     setTicketInFocus,
+    sortedTicketsSelector,
     TicketInFocusSelector,
-    TicketSelector,
 } from '../../../../redux/ticketSlice'
 import { deleteTicketThunk } from '../../../../thunks/deleteTicketThunk'
 import { formatDate } from '../../../../utils/format'
@@ -17,15 +17,14 @@ interface Props {
     style: React.CSSProperties
 }
 
-export const Row = (props: Props) => {
+export const SearchRow = (props: Props) => {
     const { index, style } = props
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    // const [createdOn, setCreatedOn] = React.useState<string>('')
 
-    const tickets = useAppSelector(TicketSelector)
+    const tickets = useAppSelector(sortedTicketsSelector)
     const ticketInFocus = useAppSelector(TicketInFocusSelector)
-    //TODO might want to move this out to global state
+
     const currentTicket = tickets[index]
 
     const dateFormat = window.innerWidth > 500 ? 'long' : 'short'

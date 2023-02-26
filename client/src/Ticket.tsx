@@ -57,8 +57,6 @@ export const TicketForm: React.FC = () => {
         createTicket(newTicket)
     }
 
-    console.log({ apiStatus })
-
     return (
         // <div className="bg-gray-200 h-screen flex items-center justify-center">
         <div className="w-full max-w-xs">

@@ -10,6 +10,11 @@ import { persistor, store } from './redux/store'
 import './index.css'
 import { CreateTicket } from './ui/components/CreateTicket'
 import { ShowTicket } from './ui/components/ShowTicket'
+import { SortTicketList } from './ui/components/SortTicketList'
+import { SearchByComfortLevel } from './ui/components/SortTicketList/views/SearchByComfort'
+import { SearchByDate } from './ui/components/SortTicketList/views/SearchByDate'
+import { SearchByEpic } from './ui/components/SortTicketList/views/SearchByEpic'
+import { SearchByTitle } from './ui/components/SortTicketList/views/SearchByTitle'
 import { TicketList } from './ui/components/TicketList'
 import { ErrorPage } from './ui/ErrorPage'
 
@@ -30,13 +35,33 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: '/tickets/:ticketId',
+        path: '/tickets/:id',
         element: <ShowTicket />,
         errorElement: <ErrorPage />,
     },
     {
         path: '/tickets/sort',
-        element: <App />,
+        element: <SortTicketList />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/tickets/sort/epic',
+        element: <SearchByEpic />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/tickets/sort/title',
+        element: <SearchByTitle />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/tickets/sort/date',
+        element: <SearchByDate />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/tickets/sort/comfort',
+        element: <SearchByComfortLevel />,
         errorElement: <ErrorPage />,
     },
 ])

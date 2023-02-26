@@ -5,7 +5,6 @@ import { navstateSelector, setNavState } from '../../../redux/applicationSlice'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 
 export const Nav = () => {
-    // eventually you'll want to pass this in as a prop
     const dispatch = useAppDispatch()
     const navstate = useAppSelector(navstateSelector)
     const navigate = useNavigate()

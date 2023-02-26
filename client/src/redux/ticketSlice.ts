@@ -28,6 +28,8 @@ export type TicketState = {
     }
     tickets: Ticket[]
     ticketInFocus: number
+    viewTicket: Ticket | null
+    sortedTickets: Ticket[]
 }
 
 export type UpdateTicketUI = {
@@ -45,6 +47,8 @@ export const initialState: TicketState = {
     },
     tickets: [],
     ticketInFocus: 0,
+    viewTicket: null,
+    sortedTickets: [],
 }
 
 export const ticketSlice = createSlice({
@@ -104,6 +108,20 @@ export const ticketSlice = createSlice({
         clearTicketInFocus: (state) => {
             state.ticketInFocus = 0
         },
+        setSortedTickets: (state, action: PayloadAction<string>) => {
+            state.sortedTickets = state.tickets.filter(
+                (ticket) => ticket.epic === action.payload,
+            )
+        },
+        clearSortedTickets: (state) => {
+            state.sortedTickets = []
+        },
+        setViewTicket: (state, action: PayloadAction<Ticket>) => {
+            state.viewTicket = action.payload
+        },
+        clearViewTicket: (state) => {
+            state.viewTicket = null
+        },
     },
 })
 
@@ -117,6 +135,10 @@ export const {
     updateTicket,
     setTicketInFocus,
     clearTicketInFocus,
+    setSortedTickets,
+    clearSortedTickets,
+    setViewTicket,
+    clearViewTicket,
 } = ticketSlice.actions
 
 export default ticketSlice.reducer
@@ -134,3 +156,17 @@ export const TicketByIdSelector = (id: number) =>
     createSelector(TicketSelector, (tickets) => {
         return tickets.find((ticket) => ticket.id === id)
     })
+export const epicSelector = () =>
+    createSelector(TicketSelector, (tickets) => {
+        const arr = []
+        for (const ticket of tickets) {
+            if (ticket.epic) {
+                arr.push(ticket.epic)
+            }
+        }
+        return arr
+    })
+export const sortedTicketsSelector = ({ tickets }: RootState) =>
+    tickets.sortedTickets
+
+export const viewTicketSelector = ({ tickets }: RootState) => tickets.viewTicket

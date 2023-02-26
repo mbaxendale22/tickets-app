@@ -9,6 +9,7 @@ import {
     TicketIsLoadingSelector,
 } from '../../../../redux/ticketSlice'
 import { createTicketThunk } from '../../../../thunks/createTicketThunk'
+import { PageHeader } from '../../componentLibrary/PageHeader'
 import { Nav } from '../../Nav'
 
 // import { EmailIcon, EyeIcon, EyeSlashedIcon } from '../../../assets/Icons'
@@ -60,17 +61,14 @@ export const CreateTicket: React.FC = () => {
     }
 
     return (
-        <div className="w-full flex flex-col justify-center items-center pt-12 pb-24">
+        <div className="w-full flex flex-col justify-center items-center pb-24">
+            <PageHeader title="Create Ticket" />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}>
                 {({ errors, touched }) => (
                     <Form className="bg-neutral p-6 rounded-lg shadow-md flex flex-col justify-center items-center w-3/4">
-                        <h2 className="text-lg font-medium mb-4">
-                            Create New Ticket
-                        </h2>
-
                         <div className="mb-4 w-3/4 flex flex-col justify-center items-center">
                             <div className=" flex w-3/4 mb-2">
                                 <div className="w-1/3"></div>

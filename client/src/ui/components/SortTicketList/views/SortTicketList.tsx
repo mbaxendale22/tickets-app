@@ -1,15 +1,22 @@
-import React from 'react'
+import * as React from 'react'
 
-interface Props {
-    myProp: string
-}
+import { PageHeader } from '../../componentLibrary/PageHeader'
+import { Nav } from '../../Nav'
 
-export const SortTicketList = (props: Props) => {
-    const { myProp } = props
+import { SelectSearchOption } from './SelectSearchOption'
+
+export const SortTicketList = () => {
     return (
         <div>
-            <p>{myProp}</p>
+            <PageHeader title="Search for Tickets" />
+            <div className="flex flex-col justify-center items-center">
+                <h3 className="text-2xl pt-8">
+                    How would you like to search for tickets?
+                </h3>
+                <SelectSearchOption />
+            </div>
+
+            <Nav />
         </div>
     )
 }
-

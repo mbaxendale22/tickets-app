@@ -9,6 +9,7 @@ import {
     TicketSelector,
 } from '../../../../redux/ticketSlice'
 import { userDataThunk } from '../../../../thunks/userDataThunk'
+import { PageHeader } from '../../componentLibrary/PageHeader'
 import { Nav } from '../../Nav'
 
 import { Row } from './Row'
@@ -48,14 +49,11 @@ export const TicketList = () => {
         )
     }
 
-    console.log('tickets', tickets)
     return (
         <div className="w-full h-full flex flex-col space-y-12">
             {!isLoading ? (
                 <>
-                    <h1 className="text-semibold text-5xl text-center mt-12">
-                        My Lastest Tickets
-                    </h1>
+                    <PageHeader title="My Lastest Tickets" />
                     <button className="btn btn-primary" onClick={handleLogout}>
                         Log out
                     </button>

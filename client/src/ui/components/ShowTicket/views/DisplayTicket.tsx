@@ -1,27 +1,37 @@
 import * as React from 'react'
+import { useParams } from 'react-router-dom'
 
-type Props = {
-    title: string
-    description: string | undefined
-    epic: string | undefined
-    comfort_level: number | undefined
-    learning_outcomes: string | undefined
-    reflections: string | undefined
-    link: string | undefined
-    createdAt: string
-    updatedAt: string
-}
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
+import {
+    TicketIsLoadingSelector,
+    viewTicketSelector,
+} from '../../../../redux/ticketSlice'
+import { getTicketByIdThunk } from '../../../../thunks/getTicketByIdThunk'
+import { formatDate } from '../../../../utils/format'
 
-export const DisplayTicket = (props: Props) => {
-    const { title } = props
+export const DisplayTicket = () => {
+    const params = useParams()
+    const dispatch = useAppDispatch()
+    const ticketId = Number(params.ticketId || 0)
+    const isLoading = useAppSelector(TicketIsLoadingSelector)
+    const ticket = useAppSelector(viewTicketSelector)
+
+    React.useEffect(() => {
+        if (ticket === null) {
+            dispatch(getTicketByIdThunk(ticketId))
+        }
+    }, [dispatch])
 
     const captilise = (str: string) =>
         str.charAt(0).toUpperCase() + str.slice(1)
 
     const createArrayfromProps = () => {
+        if (!ticket) {
+            return null
+        }
         const arr = []
-        for (const [key, value] of Object.entries(props)) {
-            if (key === 'title') {
+        for (const [key, value] of Object.entries(ticket)) {
+            if (key === 'title' || key === 'userId' || key === 'id') {
                 continue
             }
             if (key === 'comfort_level') {
@@ -29,13 +39,16 @@ export const DisplayTicket = (props: Props) => {
                 continue
             }
             if (key === 'createdAt') {
-                arr.push({ key: 'created on', value })
+                const formattedCreatedAt = formatDate(value, 'long')
+                arr.push({ key: 'created on', value: formattedCreatedAt })
                 continue
             }
             if (key === 'updatedAt') {
-                arr.push({ key: 'last updated', value })
+                const formattedUpdatedAt = formatDate(value, 'long')
+                arr.push({ key: 'last updated', value: formattedUpdatedAt })
                 continue
             }
+
             if (value) {
                 arr.push({ key, value })
             }
@@ -44,14 +57,17 @@ export const DisplayTicket = (props: Props) => {
     }
 
     const data = createArrayfromProps()
+    if (isLoading) {
+        return <p>Loading...</p>
+    }
 
     return (
         <div>
             <h1 className="border-b-2 border-accent text-5xl px-8 pt-8 pb-2">
-                {title}
+                {ticket?.title}
             </h1>
             <div className="flex flex-col justify-center items-center mt-4">
-                {data.map((item, index) => {
+                {data?.map((item, index) => {
                     return (
                         <div
                             className="bg-slate-900 rounded-xl p-4 w-full sm:w-1/2 mb-4"

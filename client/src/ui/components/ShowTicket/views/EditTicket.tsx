@@ -4,7 +4,11 @@ import * as Yup from 'yup'
 
 import { InfoIcon } from '../../../../assets/Icons'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
-import { TicketIsLoadingSelector } from '../../../../redux/ticketSlice'
+import type { Ticket } from '../../../../redux/ticketSlice'
+import {
+    TicketIsLoadingSelector,
+    viewTicketSelector,
+} from '../../../../redux/ticketSlice'
 import { updateTicketThunk } from '../../../../thunks/updateTicketThunk'
 import { Nav } from '../../Nav'
 
@@ -21,9 +25,14 @@ type Props = {
     updatedAt: string
 }
 
-//TODO Editing comfort level is failing, check create ticket api call and match up types (being sent as a string)
+export const EditTicket = () => {
+    const isLoading = useAppSelector(TicketIsLoadingSelector)
+    const ticket = useAppSelector(viewTicketSelector)
+    const dispatch = useAppDispatch()
 
-export const EditTicket = (props: Props) => {
+    if (ticket === null) {
+        return null
+    }
     const {
         id,
         title,
@@ -35,10 +44,7 @@ export const EditTicket = (props: Props) => {
         link,
         createdAt,
         updatedAt,
-    } = props
-
-    const isLoading = useAppSelector(TicketIsLoadingSelector)
-    const dispatch = useAppDispatch()
+    } = ticket
 
     const initialValues: Props = {
         id,
