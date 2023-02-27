@@ -9,7 +9,10 @@ import {
     epicSelector,
     setSortedTickets,
     sortedTicketsSelector,
+    TicketIsLoadingSelector,
 } from '../../../../redux/ticketSlice'
+import { UserAccessTokenSelector } from '../../../../redux/userSlice'
+import { setInitialTickets } from '../../../../thunks/setInitialTickets'
 import { PageHeader } from '../../componentLibrary/PageHeader'
 import { Nav } from '../../Nav'
 
@@ -17,10 +20,17 @@ import { SearchRow } from './SearchRow'
 
 export const SearchByEpic = () => {
     const availableEpics = useAppSelector(epicSelector())
+    const access_token = useAppSelector(UserAccessTokenSelector)
+    const isLoading = useAppSelector(TicketIsLoadingSelector)
     const numOfTickets = useAppSelector(sortedTicketsSelector).length || 0
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const listHeight = window.innerHeight / 2
+
+    //Todo: remaking this request is expensive, could persist epic data in state, could create an endpoint to get all epics
+    React.useEffect(() => {
+        dispatch(setInitialTickets(access_token))
+    }, [])
 
     const handleChange = (e: any) => {
         const epic = e.target.value
@@ -30,6 +40,10 @@ export const SearchByEpic = () => {
     const handleClick = () => {
         dispatch(clearSortedTickets())
         navigate('/tickets/sort')
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>
     }
 
     return (

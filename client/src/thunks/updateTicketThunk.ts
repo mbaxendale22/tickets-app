@@ -2,12 +2,10 @@
 
 import { updateTicketById } from '../api/Tickets'
 import type { NewTicket } from '../api/Tickets/types'
-import { setIsInEditMode } from '../redux/applicationSlice'
 import {
     endTicketRequest,
     setTicketError,
     startTicketRequest,
-    updateTicket,
 } from '../redux/ticketSlice'
 import { UserAccessTokenSelector } from '../redux/userSlice'
 import type { AppThunk } from '../types/redux'
@@ -20,11 +18,9 @@ export const updateTicketThunk =
         try {
             dispatch(startTicketRequest())
 
-            dispatch(updateTicket({ id: ticketId, newTicket }))
-
             const access_token = UserAccessTokenSelector(getState())
 
-            // set the initial state with user data
+            // update the ticket
             await updateTicketById(ticketId, newTicket, access_token)
 
             // get newly updated tickets
@@ -33,7 +29,5 @@ export const updateTicketThunk =
             dispatch(endTicketRequest())
         } catch (error) {
             dispatch(setTicketError('error updating users tickets'))
-        } finally {
-            dispatch(setIsInEditMode(false))
         }
     }

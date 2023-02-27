@@ -85,23 +85,7 @@ export const ticketSlice = createSlice({
                 (ticket) => ticket.id !== action.payload,
             )
         },
-        // update a ticket in state - for optimistic updates
-        updateTicket: (state, action: PayloadAction<UpdateTicketUI>) => {
-            const originalTicket = state.tickets.find(
-                (ticket) => ticket.id === action.payload.id,
-            )
-            if (!originalTicket) {
-                return
-            }
-            const updatedTicket = {
-                ...originalTicket,
-                ...action.payload.newTicket,
-            }
 
-            state.tickets = state.tickets.map((ticket) =>
-                ticket.id === action.payload.id ? updatedTicket : ticket,
-            )
-        },
         setTicketInFocus: (state, action: PayloadAction<number>) => {
             state.ticketInFocus = action.payload
         },
@@ -132,7 +116,6 @@ export const {
     setTickets,
     addTicket,
     removeTicket,
-    updateTicket,
     setTicketInFocus,
     clearTicketInFocus,
     setSortedTickets,

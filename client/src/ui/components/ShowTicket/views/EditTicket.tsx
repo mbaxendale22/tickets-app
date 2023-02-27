@@ -1,10 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as React from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { InfoIcon } from '../../../../assets/Icons'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
-import type { Ticket } from '../../../../redux/ticketSlice'
 import {
     TicketIsLoadingSelector,
     viewTicketSelector,
@@ -29,6 +29,8 @@ export const EditTicket = () => {
     const isLoading = useAppSelector(TicketIsLoadingSelector)
     const ticket = useAppSelector(viewTicketSelector)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const params = useParams()
 
     if (ticket === null) {
         return null
@@ -73,9 +75,18 @@ export const EditTicket = () => {
         if (!id) {
             return
         }
-        dispatch(updateTicketThunk(id, values))
+
+        const updatedTicket = {
+            ...values,
+            comfort_level: Number(values.comfort_level),
+        }
+
+        dispatch(updateTicketThunk(id, updatedTicket))
+        navigate(`/tickets/${params.id}`)
     }
-    //! TODO this will be a central modal component which will be used to edit and create tickets
+
+    const handleCancel = () => navigate(`/tickets/${params.id}`)
+
     return (
         <div className="w-full flex flex-col justify-center items-center pt-12 pb-24">
             <Formik
@@ -363,7 +374,8 @@ export const EditTicket = () => {
                             <button
                                 className="btn btn-error w-[45%] ml-1"
                                 type="submit"
-                                disabled={isLoading}>
+                                disabled={isLoading}
+                                onClick={handleCancel}>
                                 {'Cancel'}
                             </button>
                         </div>
