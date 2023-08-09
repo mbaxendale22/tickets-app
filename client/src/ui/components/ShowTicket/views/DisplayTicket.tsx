@@ -22,10 +22,10 @@ export const DisplayTicket = () => {
         }
     }, [dispatch])
 
-    const captilise = (str: string) =>
+    const capitalize = (str: string) =>
         str.charAt(0).toUpperCase() + str.slice(1)
 
-    const createArrayfromProps = () => {
+    const createArrayFromProps = () => {
         if (!ticket) {
             return null
         }
@@ -56,7 +56,7 @@ export const DisplayTicket = () => {
         return arr
     }
 
-    const data = createArrayfromProps()
+    const data = createArrayFromProps()
     if (isLoading) {
         return <p>Loading...</p>
     }
@@ -72,7 +72,7 @@ export const DisplayTicket = () => {
                         <div
                             className="bg-slate-900 rounded-xl p-4 w-full sm:w-1/2 mb-4"
                             key={index}>
-                            <h2 className="text-2xl">{captilise(item.key)}</h2>
+                            <h2 className="text-2xl">{capitalize(item.key)}</h2>
                             <p>{item.value}</p>
                         </div>
                     )

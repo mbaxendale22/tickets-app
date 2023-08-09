@@ -1,20 +1,16 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import { InfoIcon } from '../../../../assets/Icons'
+import { setNavState } from '../../../../redux/applicationSlice'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
-import {
-    // TicketIsErrorSelector,
-    TicketIsLoadingSelector,
-} from '../../../../redux/ticketSlice'
+import { TicketIsLoadingSelector } from '../../../../redux/ticketSlice'
 import { createTicketThunk } from '../../../../thunks/createTicketThunk'
+import { NavigationKeys } from '../../../../utils/constants'
 import { PageHeader } from '../../componentLibrary/PageHeader'
 import { Nav } from '../../Nav'
-
-// import { EmailIcon, EyeIcon, EyeSlashedIcon } from '../../../assets/Icons'
-
-//TODO only learning outcomes has responsive design.
 
 interface FormValues {
     title: string
@@ -29,6 +25,7 @@ interface FormValues {
 export const CreateTicket: React.FC = () => {
     const isLoading = useAppSelector(TicketIsLoadingSelector)
     // const isError = useAppSelector(TicketIsErrorSelector).error
+    const navigate = useNavigate()
 
     const dispatch = useAppDispatch()
 
@@ -54,6 +51,8 @@ export const CreateTicket: React.FC = () => {
 
     const handleSubmit = (values: FormValues) => {
         dispatch(createTicketThunk(values))
+        dispatch(setNavState(NavigationKeys.HOME))
+        navigate('/tickets')
     }
 
     if (isLoading) {
@@ -217,11 +216,11 @@ export const CreateTicket: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="mb-4 w-3/4 flex flex-col justify-center items-center">
+                        <div className="mb-4 w-full sm:w-3/4 flex flex-col justify-center items-center">
                             <div className=" flex w-3/4 mb-2">
-                                <div className="w-1/3"></div>
+                                <div className="sm:w-1/3"></div>
                                 <label
-                                    className="flex justify-center items-center text-gray-400 font-medium w-1/3"
+                                    className="flex justify-center items-center text-gray-400 font-medium sm:w-1/2"
                                     htmlFor="comfort_level">
                                     Comfort Level
                                 </label>
@@ -233,7 +232,7 @@ export const CreateTicket: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="form-control w-3/4">
+                            <div className="form-control w-full sm:w-3/4">
                                 <div className="input-group">
                                     <Field
                                         className={`input input-bordered w-full ${

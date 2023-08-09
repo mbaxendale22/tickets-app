@@ -9,6 +9,7 @@ import {
     TicketIsLoadingSelector,
     viewTicketSelector,
 } from '../../../../redux/ticketSlice'
+import { getTicketByIdThunk } from '../../../../thunks/getTicketByIdThunk'
 import { updateTicketThunk } from '../../../../thunks/updateTicketThunk'
 import { Nav } from '../../Nav'
 
@@ -32,9 +33,18 @@ export const EditTicket = () => {
     const navigate = useNavigate()
     const params = useParams()
 
-    if (ticket === null) {
-        return null
+    console.log(ticket)
+    React.useEffect(() => {
+        if (!params.id) {
+            return
+        }
+        dispatch(getTicketByIdThunk(Number(params.id)))
+    }, [dispatch])
+
+    if (!ticket) {
+        return <p>no ticket found</p>
     }
+
     const {
         id,
         title,

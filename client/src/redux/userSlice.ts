@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import { persistReducer } from 'redux-persist'
+import { persistReducer, PURGE } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 import type { RootState } from '../types/redux'
@@ -73,6 +73,11 @@ export const userSlice = createSlice({
         setAccessToken: (state, action: PayloadAction<string>) => {
             state.access_token = action.payload
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => {
+            return initialState
+        })
     },
 })
 

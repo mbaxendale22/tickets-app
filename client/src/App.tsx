@@ -15,7 +15,6 @@ export const App = () => {
 
     const userIsLoggedIn = userIsAuthenticated(token)
 
-    //! TODO navigate to seperate page if user has no tickets?
     React.useEffect(() => {
         if (userIsLoggedIn) {
             dispatch(userDataThunk())

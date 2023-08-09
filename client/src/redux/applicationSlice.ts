@@ -2,6 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 import type { RootState } from '../types/redux'
+import { NavigationKeys } from '../utils/constants'
 
 export type ApplicationState = {
     navstate: string
@@ -10,7 +11,7 @@ export type ApplicationState = {
 }
 
 export const initialState: ApplicationState = {
-    navstate: '1',
+    navstate: NavigationKeys.HOME,
     ticketSearchBy: '',
 }
 

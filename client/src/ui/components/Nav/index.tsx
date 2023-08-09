@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { navstateSelector, setNavState } from '../../../redux/applicationSlice'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { NavigationKeys } from '../../../utils/constants'
 
 export const Nav = () => {
     const dispatch = useAppDispatch()
@@ -11,13 +12,13 @@ export const Nav = () => {
 
     const selectScreen = (id: string) => {
         switch (id) {
-            case '1':
+            case NavigationKeys.HOME:
                 navigate('/tickets')
                 break
-            case '2':
+            case NavigationKeys.CREATE:
                 navigate('/tickets/create')
                 break
-            case '3':
+            case NavigationKeys.SEARCH:
                 navigate('/tickets/sort')
                 break
             default:

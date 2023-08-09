@@ -9,14 +9,14 @@ import { Nav } from '../../Nav'
 
 import { DisplayTicket } from './DisplayTicket'
 
-//TODO DisplayTicket is working n refresh but edit ticket OU is broken now.
-
 export const ShowTicket = () => {
     const dispatch = useAppDispatch()
     const params = useParams()
     const navigate = useNavigate()
 
     const isLoading = useAppSelector(TicketIsLoadingSelector)
+
+    console.log("hello you're in the right screen")
 
     React.useEffect(() => {
         if (!params.id) {

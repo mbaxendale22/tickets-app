@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { EyeIcon, TrashBinIcon } from '../../../../assets/Icons'
+import { EditIcon, EyeIcon, TrashBinIcon } from '../../../../assets/Icons'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks'
 import {
     removeTicket,
@@ -32,11 +32,19 @@ export const Row = (props: Props) => {
 
     const createdOn = formatDate(currentTicket.createdAt, dateFormat)
 
-    const handleUpdateTicket = () => {
+    const handleShowTicket = () => {
         if (!currentTicket.id) {
             return
         }
         navigate(`/tickets/${currentTicket.id}`, { state: currentTicket.id })
+    }
+    const handleUpdateTicket = () => {
+        if (!currentTicket.id) {
+            return
+        }
+        navigate(`/tickets/edit/${currentTicket.id}`, {
+            state: currentTicket.id,
+        })
     }
 
     const selectTicketToBeDeleted = () => {
@@ -44,7 +52,7 @@ export const Row = (props: Props) => {
     }
 
     const handleDeleteTicket = () => {
-        // optisimistic update
+        // optimistic update
         dispatch(removeTicket(ticketInFocus))
         // api call
         dispatch(deleteTicketThunk(ticketInFocus))
@@ -59,8 +67,11 @@ export const Row = (props: Props) => {
             <div className="flex justify-between items-center w-full">
                 <p className="w-1/2 flex-shrink-1">{tickets[index].title}</p>
                 <p>{createdOn}</p>
-                <button onClick={handleUpdateTicket}>
+                <button onClick={handleShowTicket}>
                     <EyeIcon />
+                </button>
+                <button onClick={handleUpdateTicket}>
+                    <EditIcon />
                 </button>
                 <button onClick={selectTicketToBeDeleted}>
                     <div className="modal-action mt-0">

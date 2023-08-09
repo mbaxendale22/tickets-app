@@ -11,6 +11,7 @@ import './index.css'
 import { CreateTicket } from './ui/components/CreateTicket'
 import { ShowTicket } from './ui/components/ShowTicket'
 import { EditTicket } from './ui/components/ShowTicket/views/EditTicket'
+import { SignUp } from './ui/components/SignUp'
 import { SortTicketList } from './ui/components/SortTicketList'
 import { SearchByComfortLevel } from './ui/components/SortTicketList/views/SearchByComfort'
 import { SearchByDate } from './ui/components/SortTicketList/views/SearchByDate'
@@ -23,6 +24,11 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/sign-up',
+        element: <SignUp />,
         errorElement: <ErrorPage />,
     },
     {
